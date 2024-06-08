@@ -1,15 +1,32 @@
 <template>
   <form @submit.prevent>
     <h4>Створення поста</h4>
-    <input v-bind:value="title" @input="title = $event.target.value" class="input" type="text" name="" placeholder="Назва">
-    <textarea v-bind:value="body" @input="body = $event.target.value" class="textarea" name="" placeholder="Опис"></textarea>
-    <button class="btn" >Створити</button>
+    <input v-model="post.title" class="input" type="text" name="title" placeholder="Назва">
+    <textarea v-model="post.body" class="textarea" name="body" placeholder="Опис"></textarea>
+    <my-button class="btn" @click="createPost">Створити</my-button>
   </form>
 </template>
 
 <script>
   export default {
-
+    data () {
+      return {
+        post: {
+          title: '',
+          body: '',
+        }
+      }
+    },
+    methods: {
+      createPost () {
+        this.post.id = Date.now()
+        this.$emit('create', this.post)
+        this.post = {
+          title: '',
+          body: '',
+        }
+      }
+    }
   }
 </script>
 
@@ -26,25 +43,10 @@ form {
   padding: 10px 15px;
   resize: none;
 }
-.input, .textarea, .btn {
-  border-radius: 5px;
+.input, .textarea {
+  border-radius: 3px;
 }
 .textarea {
   height: 110px;
-}
-.btn {
-  display: block;
-  padding: 10px 15px;
-  background-color: transparent;
-  border: 1px solid dodgerblue;
-  color: dodgerblue;
-  max-width: fit-content;
-  width: 100%;
-  margin-left: auto;
-  transition: all .3s linear;
-}
-.btn:hover {
-  background-color: dodgerblue;
-  color: #fff;
 }
 </style>
