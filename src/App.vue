@@ -19,6 +19,16 @@
         v-if="!isPostsLoading"
     />
     <div v-else>Йде завантаження постів...</div>
+    <div class="page__wrapper">
+      <div class="page"
+           v-for="pageNumber in totalPage"
+           :key="pageNumber"
+           :class="{
+             'current-page' : page=== pageNumber
+           }"
+           @click="changePage(pageNumber)"
+      >{{ pageNumber }}</div>
+    </div>
   </div>
 </template>
 
@@ -37,6 +47,9 @@ import axios from "axios";
         isPostsLoading: false,
         selectedSort: '',
         searchQuery : '',
+        page: 1,
+        limit: 10,
+        totalPage : 0,
         sortOptions: [
           {
             value: 'title', name: 'По назві'
@@ -58,10 +71,19 @@ import axios from "axios";
       showDialog() {
         this.dialogVisible = true
       },
+      changePage(pageNumber) {
+        this.page = pageNumber
+      },
       async fetchPost() {
         try {
           this.isPostsLoading = true;
-          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
+            params: {
+              _page: this.page,
+              _limit : this.limit,
+            }
+          });
+          this.totalPage = Math.ceil(response.headers['x-total-count'] / this.limit);
           this.posts = response.data;
         } catch (e) {
           alert('Помилка')
@@ -82,7 +104,9 @@ import axios from "axios";
       }
     },
     watch: {
-
+      page() {
+        this.fetchPost()
+      }
     }
   }
 </script>
@@ -116,5 +140,35 @@ import axios from "axios";
     padding: 10px 15px;
     resize: none;
     border-radius: 3px;
+  }
+
+  .page__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  .page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    padding: 10px;
+    min-width: 35px;
+    border: 1px solid black;
+    cursor: pointer;
+    transition: .3s linear;
+  }
+  .page:hover {
+    border-color: dodgerblue;
+    color: dodgerblue;
+  }
+  .current-page {
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    color: #fff;
+  }
+  .page:not(:last-child) {
+    margin-right: 10px;
   }
 </style>
