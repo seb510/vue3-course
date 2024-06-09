@@ -20,7 +20,6 @@
   color: dodgerblue;
   max-width: fit-content;
   width: 100%;
-  margin-left: auto;
   transition: all .3s linear;
   cursor: pointer;
 }

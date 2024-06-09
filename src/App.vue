@@ -1,7 +1,17 @@
 <template>
   <div class="app">
-    <post-form  @create="createPost"/>
-    <post-list :posts="posts"/>
+    <h1>Сторінка з постами</h1>
+    <my-button
+        @click="showDialog"
+        style="margin: 15px 0">Створити пост
+    </my-button>
+    <my-dialog v-model:show="dialogVisible">
+      <post-form  @create="createPost"/>
+    </my-dialog>
+    <post-list
+        :posts="posts"
+        @remove="removePost"
+    />
   </div>
 </template>
 
@@ -20,12 +30,25 @@ import PostList from "@/components/PostList.vue";
           {id: 3, title : 'ReactJs', body: 'Опис Фреймворка'},
           {id: 4, title : 'SCSS Style', body: 'Опис Стилістики'},
         ],
+        dialogVisible: false,
+        modificatorValue: '',
       }
     },
     methods: {
       createPost(post) {
-        this.posts.push(post)
+        this.posts.push(post);
+        this.dialogVisible = false;
       },
+      removePost(post) {
+        this.posts = this.posts.filter(p => p.id !== post.id)
+      },
+      showDialog() {
+        this.dialogVisible = true
+      },
+      async fetchPost() {
+
+      }
+
     }
   }
 </script>
@@ -41,6 +64,7 @@ import PostList from "@/components/PostList.vue";
   }
   h1, h2, h3, h4 ,h5, h6 {
     font-weight: 700;
+    margin-bottom: .5em;
   }
   .app {
     padding: 20px;

@@ -37,4 +37,11 @@ form {
   margin-bottom: 10px;
 }
 
+form .btn {
+  margin-left: auto;
+}
+form h4 {
+  margin-bottom: 0;
+}
+
 </style>
