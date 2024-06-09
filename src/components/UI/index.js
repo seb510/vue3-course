@@ -1,5 +1,9 @@
 import myButton from "@/components/UI/MyButton";
+import myInput from "@/components/UI/MyInput";
+import myTextarea from "@/components/UI/MyTextarea";
 
 export default [
-    myButton
+    myButton,
+    myInput,
+    myTextarea
 ]

@@ -45,4 +45,12 @@ import PostList from "@/components/PostList.vue";
   .app {
     padding: 20px;
   }
+  .input, .textarea {
+    display: inline-block;
+    width: 100%;
+    border: 1px solid dodgerblue;
+    padding: 10px 15px;
+    resize: none;
+    border-radius: 3px;
+  }
 </style>

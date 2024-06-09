@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent>
     <h4>Створення поста</h4>
-    <input v-model="post.title" class="input" type="text" name="title" placeholder="Назва">
-    <textarea v-model="post.body" class="textarea" name="body" placeholder="Опис"></textarea>
+    <my-input v-model="post.title" type="text" name="title" placeholder="Назва"/>
+    <my-textarea v-model="post.body" name="body" placeholder="Опис"></my-textarea>
     <my-button class="btn" @click="createPost">Створити</my-button>
   </form>
 </template>
@@ -36,17 +36,5 @@ form {
   grid-gap: 15px;
   margin-bottom: 10px;
 }
-.input, .textarea {
-  display: inline-block;
-  width: 100%;
-  border: 1px solid dodgerblue;
-  padding: 10px 15px;
-  resize: none;
-}
-.input, .textarea {
-  border-radius: 3px;
-}
-.textarea {
-  height: 110px;
-}
+
 </style>
