@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <h1>Сторінка з постами</h1>
+    <my-input v-model="searchQuery" placeholder="Пошук..."/>
     <div class="app__btns">
       <my-button
           @click="showDialog"
@@ -13,7 +14,7 @@
       <post-form  @create="createPost"/>
     </my-dialog>
     <post-list
-        :posts="sortedPosts"
+        :posts="sortedAndSearchedPosts"
         @remove="removePost"
         v-if="!isPostsLoading"
     />
@@ -35,6 +36,7 @@ import axios from "axios";
         dialogVisible: false,
         isPostsLoading: false,
         selectedSort: '',
+        searchQuery : '',
         sortOptions: [
           {
             value: 'title', name: 'По назві'
@@ -74,6 +76,9 @@ import axios from "axios";
     computed: {
       sortedPosts() {
         return[...this.posts].sort((post1, post2) => post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
+      },
+      sortedAndSearchedPosts () {
+        return this.sortedPosts.filter(post => post.title.toLowerCase().includes(this.searchQuery.toLowerCase()))
       }
     },
     watch: {
