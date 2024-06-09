@@ -1,37 +1,48 @@
 <template>
   <div class="app">
     <h1>Сторінка з постами</h1>
-    <my-button
-        @click="showDialog"
-        style="margin: 15px 0">Створити пост
-    </my-button>
+    <div class="app__btns">
+      <my-button
+          @click="showDialog"
+          >Створити пост
+      </my-button>
+      <my-select v-model="selectedSort" :options="sortOptions" />
+    </div>
+
     <my-dialog v-model:show="dialogVisible">
       <post-form  @create="createPost"/>
     </my-dialog>
     <post-list
         :posts="posts"
         @remove="removePost"
+        v-if="!isPostsLoading"
     />
+    <div v-else>Йде завантаження постів...</div>
   </div>
 </template>
 
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+import axios from "axios";
   export default {
     components: {
       PostForm, PostList
     },
     data() {
       return {
-        posts: [
-          {id: 1, title : 'JavaScript', body: 'Опис поста'},
-          {id: 2, title : 'VueJs', body: 'Опис Бібліотеки'},
-          {id: 3, title : 'ReactJs', body: 'Опис Фреймворка'},
-          {id: 4, title : 'SCSS Style', body: 'Опис Стилістики'},
-        ],
+        posts: [],
         dialogVisible: false,
-        modificatorValue: '',
+        isPostsLoading: false,
+        selectedSort: '',
+        sortOptions: [
+          {
+            value: 'title', name: 'По назві'
+          },
+          {
+            value: 'body', name: 'По змісту'
+          }
+        ]
       }
     },
     methods: {
@@ -46,9 +57,19 @@ import PostList from "@/components/PostList.vue";
         this.dialogVisible = true
       },
       async fetchPost() {
-
-      }
-
+        try {
+          this.isPostsLoading = true;
+          const response = await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=10');
+          this.posts = response.data;
+        } catch (e) {
+          alert('Помилка')
+        } finally {
+          this.isPostsLoading = false
+        }
+      },
+    },
+    mounted () {
+      this.fetchPost();
     }
   }
 </script>
@@ -68,6 +89,12 @@ import PostList from "@/components/PostList.vue";
   }
   .app {
     padding: 20px;
+  }
+  .app__btns {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 15px 0;
   }
   .input, .textarea {
     display: inline-block;
