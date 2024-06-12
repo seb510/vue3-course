@@ -6,6 +6,7 @@
       <div><strong>Опис: </strong>{{ post.body }}</div>
     </div>
     <div class="post__btns">
+      <my-button @click="$router.push(`/posts/${post.id}`)">Відкрити</my-button>
       <my-button @click="$emit('remove', post)">Видалити</my-button>
     </div>
   </div>
@@ -36,5 +37,14 @@
 }
 .post:not(:last-child){
   margin-bottom: 15px;
+}
+.post__btns {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  flex-shrink: 0;
+}
+.post__btns >*:first-child{
+  margin-right: 5px;
 }
 </style>
